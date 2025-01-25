@@ -1,0 +1,25 @@
+name: CI pipeline
+
+on:
+  push:
+    branches:
+      - "**" # matches every branch
+      
+jobs:
+  lint:
+    name: checkout
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+
+      - name: push to s3
+        uses: hkusu/s3-upload-action@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'eu-central-1'
+          aws-bucket: ci-ci-push-to-s3
+          file-path: 'folder/test.py'
